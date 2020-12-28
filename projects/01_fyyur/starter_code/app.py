@@ -34,6 +34,7 @@ app: Flask = Flask(__name__)
 moment: Moment = Moment(app)
 app.config.from_object("config")
 db: SQLAlchemy = SQLAlchemy(app)
+migrate: Migrate = Migrate(app, db)
 
 # TODO: connect to a local postgresql database
 
