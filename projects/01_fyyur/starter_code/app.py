@@ -42,7 +42,7 @@ migrate: Migrate = Migrate(app, db)
 
 
 class Venue(db.Model):
-    __tablename__ = 'Venue'
+    __tablename__ = 'venues'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -56,13 +56,13 @@ class Venue(db.Model):
     website = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
-    show = db.relationship('Show', backref='Venue')
+    shows = db.relationship('shows', backref='venues')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 
 class Artist(db.Model):
-    __tablename__ = 'Artist'
+    __tablename__ = 'artists'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -75,7 +75,7 @@ class Artist(db.Model):
     website = db.Column(db.String(500))
     seeking_venue = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
-    show = db.relationship('Show', backref='Artist')
+    shows = db.relationship('shows', backref='artists')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -83,12 +83,12 @@ class Artist(db.Model):
 
 
 class Show(db.Model):
-    __tablename__ = "Show"
+    __tablename__ = "shows"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
+    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'))
     start_time = db.Column(db.DateTime, nullable=False)
 
 
