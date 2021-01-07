@@ -34,7 +34,7 @@ app: Flask = Flask(__name__)
 moment: Moment = Moment(app)
 app.config.from_object("config")
 db: SQLAlchemy = SQLAlchemy(app)
-migrate: Migrate = Migrate(app, db)
+migrate: Migrate = Migrate(app, db, compare_type=True)
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -52,7 +52,7 @@ class Venue(db.Model):
     phone = db.Column(db.String(120))
     image_link = db.Column(db.String(500), nullable=False)
     facebook_link = db.Column(db.String(120))
-    genres = db.Column(db.String(120))
+    genres = db.Column(db.ARRAY(db.String, dimensions=1))
     website = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
@@ -69,7 +69,7 @@ class Artist(db.Model):
     city = db.Column(db.String(120), nullable=False)
     state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120))
-    genres = db.Column(db.String(120))
+    genres = db.Column(db.ARRAY(db.String, dimensions=1))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
     website = db.Column(db.String(500))
