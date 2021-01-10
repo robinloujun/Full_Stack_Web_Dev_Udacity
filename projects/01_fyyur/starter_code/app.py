@@ -53,7 +53,7 @@ class Venue(db.Model):
     phone = db.Column(db.String(120))
     image_link = db.Column(db.String(500), nullable=False)
     facebook_link = db.Column(db.String(120))
-    genres = db.Column(db.ARRAY(db.String, dimensions=1))
+    genres = db.Column(db.ARRAY(db.String, dimensions=1), nullable=False)
     website = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
@@ -70,7 +70,7 @@ class Artist(db.Model):
     city = db.Column(db.String(120), nullable=False)
     state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120))
-    genres = db.Column(db.ARRAY(db.String, dimensions=1))
+    genres = db.Column(db.ARRAY(db.String, dimensions=1), nullable=False)
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
     website = db.Column(db.String(500))
@@ -90,7 +90,8 @@ class Show(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
     venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'))
     start_time = db.Column(db.DateTime, nullable=False)
-
+    venue = db.relationship('Venue')
+    artist = db.relationship('Artist')
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -212,7 +213,7 @@ def show_venue(venue_id):
     for show in upcoming_shows:
         upcoming_shows_info.append({
             "artist_id": show.artist_id,
-            "artist_name": show.artist_name,
+            "artist_name": show.artist.name,
             "artist_image_link": show.artist.image_link,
             "start_time": show.start_time,
         })
