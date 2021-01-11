@@ -184,14 +184,32 @@ def search_venues():
     # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
     # seach for Hop should return "The Musical Hop".
     # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
+    search_term = request.form.get('search_term')
+    venues_found = db.session.query(Venue).filter(
+        Venue.name.contains(search_term)).all()
+    data = []
+
+    for venue in venues_found:
+        data.append({
+            "id": venue.id,
+            "name": venue.name,
+            "num_upcoming_shows": len(db.session.query(Show).filter(Show.venue_id == venue.id).filter(Show.start_time > datetime.now()).all()),
+        })
+
     response = {
-        "count": 1,
-        "data": [{
-            "id": 2,
-            "name": "The Dueling Pianos Bar",
-            "num_upcoming_shows": 0,
-        }]
+        "count": len(venues_found),
+        "data": data,
     }
+
+    # response = {
+    #     "count": 1,
+    #     "data": [{
+    #         "id": 2,
+    #         "name": "The Dueling Pianos Bar",
+    #         "num_upcoming_shows": 0,
+    #     }]
+    # }
+
     return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
 
 
@@ -217,7 +235,6 @@ def show_venue(venue_id):
             "artist_image_link": show.artist.image_link,
             "start_time": show.start_time,
         })
-        print('upcoming', upcoming_shows_info)
 
     for show in past_shows:
         past_shows_info.append({
@@ -226,11 +243,10 @@ def show_venue(venue_id):
             "artist_image_link": show.artist.image_link,
             "start_time": show.start_time,
         })
-        print('past', past_shows_info)
 
     data = {
         "id": venue.id,
-        "name": venue.id,
+        "name": venue.name,
         "genres": venue.genres,
         "address": venue.address,
         "city": venue.city,
@@ -342,22 +358,62 @@ def create_venue_submission():
     # TODO: insert form data as a new Venue record in the db, instead
     # TODO: modify data to be the data object returned from db insertion
 
-    # on successful db insert, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
-    # TODO: on unsuccessful db insert, flash an error instead.
+    form = VenueForm(request.form, meta={"csrf": False})
+
+    if form.validate_on_submit():
+        try:
+            venue: Venue = Venue()
+            form.populate_obj(venue)
+            db.session.add(venue)
+            db.session.commit()
+            # on successful db insert, flash success
+            flash('Venue ' + request.form['name'] +
+                  ' was successfully listed!')
+        except ValueError as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            # on unsuccessful db insert, flash an error instead.
+            flash('An error occurred: ' + str(e))
+        finally:
+            db.session.close()
+
+    else:
+        error_msg = []
+        for field, error in form.errors.items():
+            error_msg.append(f"{field}: {str(error)}")
+        flash('Error occurred: ' + str(error_msg))
+
     # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
     # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
     return render_template('pages/home.html')
 
 
-@app.route('/venues/<venue_id>', methods=['DELETE'])
+@app.route('/venues/<venue_id>', methods=['POST'])
 def delete_venue(venue_id):
     # TODO: Complete this endpoint for taking a venue_id, and using
     # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
 
     # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
     # clicking that button delete it from the db then redirect the user to the homepage
-    return None
+    error = False
+    try:
+        Venue.query.filter_by(id=venue_id).delete()
+        db.session.commit()
+        # on successful db delete, flash success
+        flash('Venue ' + venue_id + ' was successfully deleted!')
+    except:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+    if error:
+        print('An error occurred. Venue {venue_id} could not be deleted.')
+    if not error:
+        print('Venue {venue_id} was successfully deleted.')
+
+    return redirect(url_for('index'))
+
 
 #  Artists
 #  ----------------------------------------------------------------
