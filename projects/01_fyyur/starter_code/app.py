@@ -815,6 +815,7 @@ def shows():
             "artist_name": show.artist.name,
             "artist_image_link": show.artist.image_link,
             "start_time": show.start_time,
+            "end_time": show.end_time,
         })
 
     # data = [{
