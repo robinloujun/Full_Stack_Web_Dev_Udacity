@@ -86,6 +86,7 @@ class Show(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
     venue_id = db.Column(db.Integer, db.ForeignKey('venues.id'))
     start_time = db.Column(db.DateTime, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=True)
     venue = db.relationship('Venue')
     artist = db.relationship('Artist')
 
@@ -207,7 +208,6 @@ def search_venues():
         }
     except:
         flash(f"wrong format, should be 'city, state'")
-
 
     # response = {
     #     "count": 1,
