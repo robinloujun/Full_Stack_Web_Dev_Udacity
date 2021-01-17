@@ -59,6 +59,14 @@ class Question(db.Model):
             'difficulty': self.difficulty
         }
 
+    def is_valid(self):
+        return all([
+            self.question,
+            self.answer,
+            self.category,
+            self.difficulty
+        ])
+
 
 class Category(db.Model):
     """
@@ -76,3 +84,11 @@ class Category(db.Model):
             'id': self.id,
             'type': self.type
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
