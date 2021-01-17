@@ -66,29 +66,83 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-REVIEW_COMMENT
-```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
+## API Documents
+The Trivia API is organized around REST. Our API has predictable resource-oriented URLs, accepts JSON-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
 
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
+### Endpoints for Category
+- GET '/categories'
+- GET '/categories/:category_id/questions'
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+```
 {'1' : "Science",
 '2' : "Art",
 '3' : "Geography",
 '4' : "History",
 '5' : "Entertainment",
 '6' : "Sports"}
-
 ```
 
+GET '/categories/:category_id/questions'
+- Fetches a dictionary of questions, which belong to a category with given category id.
+- Request arguments: index of the category
+- Returns:
+  - questions: a list of dictionaries of found question in pre-defined format
+  - found_questions: total number of questions in the given category
+  - current_category: the given index of the category
+
+### Endpoints for Question
+- GET '/questions'
+- GET '/questions/:question_id'
+- POST '/questions/create'
+- POST '/questions/search'
+- DELETE '/questions/:question_id'
+
+GET '/questions'
+- Fetches a dictionary of questions including pagination
+- Request Arguments: None
+- Returns: 
+  - questions: a list of dictionaries of found question on current page in pre-defined format
+  - total_questions: total number of questions in the given category
+  - current_category: None
+
+GET '/questions/:question_id'
+- Fetches a dictionary of question, which has the given question id.
+- Request arguments: index of the question
+- Returns:
+  - question: a dictionary of question in pre-defined format
+
+POST '/questions/create'
+- Creates a dictionary of questions
+- Request Arguments: dictionary of the question items
+- Returns: 
+  - question_id: index string of the question
+
+POST '/questions/search'
+- Fetch a dictionary of questions with given search team in question content
+- Request Arguments: search item in string
+- Returns:
+  - questions: a list of dictionaries of found question on current page in pre-defined format
+  - found_questions: total number of questions found with the term
+  - current_category: None
+  
+DELETE '/questions/:question_id'
+- Delete a dictionary of question, which has the given question id.
+- Request Arguments: index of the question
+- Returns: 
+  - question_id: index string of the question
+
+### Endpoints for Quiz
+- POST '/quizzes'
+- Fetches a dictionary of question which is generated for the quiz
+- Request Arguments: 
+  - quiz_category: the index of category set for the quiz
+  - previous_questions: a list of question ids of previous questions
+- Returns: 
+  - questions: a dictionary of generated question in pre-defined format
 
 ## Testing
 To run the tests, run
