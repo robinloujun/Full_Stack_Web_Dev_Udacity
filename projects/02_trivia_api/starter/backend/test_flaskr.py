@@ -167,6 +167,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['current_category'], 1)
         self.assertEqual(data['found_questions'], 3)
 
+    def test_search_questions_in_all_categories(self):
+        res = self.client().get('/categories/0/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertEqual(data['current_category'], 0)
+        self.assertEqual(data['found_questions'], 19)
+
     def test_400_search_questions_in_non_existing_category(self):
         res = self.client().get('/categories/100/questions')
         data = json.loads(res.data)

@@ -177,6 +177,18 @@ def create_app(test_config=None):
         categories in the left column will cause only questions of that
         category to be shown.
         """
+        categories = {cat.id: cat.type for cat in Category.query.all()}
+        if category_id == 0:
+            questions = Question.query.all()
+            questions_onsite = paginate_questions(request, questions)
+            return jsonify({
+                'success': True,
+                'questions': questions_onsite,
+                'found_questions': len(questions),
+                'current_category': category_id,
+                'categories': categories,
+            })
+
         cat_ids = Category.query.with_entities(Category.id).all()
         cat_list = [cat for (cat,) in cat_ids]
         if category_id not in cat_list:
@@ -186,7 +198,6 @@ def create_app(test_config=None):
         if not len(questions_in_cat):
             abort(404)
         questions_onsite = paginate_questions(request, questions_in_cat)
-        categories = {cat.id: cat.type for cat in Category.query.all()}
         return jsonify({
             'success': True,
             'questions': questions_onsite,
@@ -213,13 +224,14 @@ def create_app(test_config=None):
 
         # given a specific category
         if quiz_cat_id:
-            questions = Question.query.filter_by(category=quiz_cat_id).filter(Question.id.notin_(previous_qustions)).all()
+            questions = Question.query.filter_by(category=quiz_cat_id).filter(
+                Question.id.notin_(previous_qustions)).all()
         # set all categories
         else:
-            questions = Question.query.filter(Question.id.notin_(previous_qustions)).all()
+            questions = Question.query.filter(
+                Question.id.notin_(previous_qustions)).all()
         if not questions:
             abort(404)
-        
         quiz_question = random.sample(questions, 1)[0].format()
         return jsonify({
             'success': True,
