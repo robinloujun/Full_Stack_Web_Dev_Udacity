@@ -17,6 +17,7 @@ class QuizView extends Component {
       currentQuestion: {},
       guess: "",
       forceEnd: false,
+      questionsInCategory: null,
     };
   }
 
@@ -36,7 +37,19 @@ class QuizView extends Component {
   }
 
   selectCategory = ({ type, id = 0 }) => {
-    this.setState({ quizCategory: { type, id } }, this.getNextQuestion);
+    $.ajax({
+      url: `/categories/${id}/questions`,
+      type: "GET",
+      success: (result) => {
+        if (result.found_questions >= 5) {
+          this.setState({ quizCategory: { type, id } }, this.getNextQuestion);
+        } else {
+          alert(
+            "Unable to play a quiz. Not enough questions in the selected category."
+          );
+        }
+      },
+    });
   };
 
   handleChange = (event) => {
@@ -150,7 +163,7 @@ class QuizView extends Component {
       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
       .toLowerCase();
     const answerArray = this.state.currentQuestion.answer.toLowerCase();
-    return formatGuess != "" && answerArray.includes(formatGuess);
+    return formatGuess !== "" && answerArray.includes(formatGuess);
   };
 
   renderCorrectAnswer() {
