@@ -41,7 +41,7 @@ class QuizView extends Component {
       url: `/categories/${id}/questions`,
       type: "GET",
       success: (result) => {
-        if (result.found_questions >= 5) {
+        if (result.found_questions >= questionsPerPlay) {
           this.setState({ quizCategory: { type, id } }, this.getNextQuestion);
         } else {
           alert(
