@@ -73,7 +73,7 @@ The Trivia API is organized around REST. Our API has predictable resource-orient
 - GET '/categories'
 - GET '/categories/:category_id/questions'
 
-GET '/categories'
+#### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
@@ -86,7 +86,7 @@ GET '/categories'
 '6' : "Sports"}
 ```
 
-GET '/categories/:category_id/questions'
+#### GET '/categories/:category_id/questions'
 - Fetches a dictionary of questions, which belong to a category with given category id.
 - Request arguments: index of the category
 - Returns:
@@ -101,7 +101,7 @@ GET '/categories/:category_id/questions'
 - POST '/questions/search'
 - DELETE '/questions/:question_id'
 
-GET '/questions'
+#### GET '/questions'
 - Fetches a dictionary of questions including pagination
 - Request Arguments: None
 - Returns: 
@@ -109,19 +109,19 @@ GET '/questions'
   - total_questions: total number of questions in the given category
   - current_category: None
 
-GET '/questions/:question_id'
+#### GET '/questions/:question_id'
 - Fetches a dictionary of question, which has the given question id.
 - Request arguments: index of the question
 - Returns:
   - question: a dictionary of question in pre-defined format
 
-POST '/questions/create'
+#### POST '/questions/create'
 - Creates a dictionary of questions
 - Request Arguments: dictionary of the question items
 - Returns: 
   - question_id: index string of the question
 
-POST '/questions/search'
+#### POST '/questions/search'
 - Fetch a dictionary of questions with given search team in question content
 - Request Arguments: search item in string
 - Returns:
@@ -129,7 +129,7 @@ POST '/questions/search'
   - found_questions: total number of questions found with the term
   - current_category: None
   
-DELETE '/questions/:question_id'
+#### DELETE '/questions/:question_id'
 - Delete a dictionary of question, which has the given question id.
 - Request Arguments: index of the question
 - Returns: 
@@ -137,6 +137,8 @@ DELETE '/questions/:question_id'
 
 ### Endpoints for Quiz
 - POST '/quizzes'
+
+#### POST '/quizzes'
 - Fetches a dictionary of question which is generated for the quiz
 - Request Arguments: 
   - quiz_category: the index of category set for the quiz
