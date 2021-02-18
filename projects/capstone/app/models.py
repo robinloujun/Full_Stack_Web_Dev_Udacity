@@ -1,8 +1,8 @@
-from sqlalchemy import Column, String, create_engine
 import json
+from markdown import markdown
 from datetime import datetime
 from . import db
-
+from flask_login import UserMixin, AnonymousUserMixin
 
 '''
 setup_db(app)
@@ -18,25 +18,36 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
-'''
-Person
-Have title and release year
-'''
+class Vehicle(db.Model):
+    __tablename__ = "vehicles"
+
+    VIN = db.Column(db.Integer, primary_key=True)
+    make = db.Column(db.String(64))
+    model = db.Column(db.String(64))
+    model_year = db.Column(db.Integer)
+    fuel_type = db.Column(db.String(64))
+    standard_seat_number = db.Column(db.Integer)
+    automatic = db.Column(db.Boolean)
+    bookings = db.relationship("Booking", backref="vehicles")
 
 
-class Person(db.Model):
-    __tablename__ = 'People'
+class Client(db.Model):
+    __tablename__ = "clients"
 
-    id = Column(db.Integer, primary_key=True)
-    name = Column(String)
-    catchphrase = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    forename = db.Column(db.String(64))
+    surname = db.Column(db.String(64))
+    email = db.Column(db.String(64), unique=True, index=True)
+    bookings = db.relationship("Booking", backref="clients")
 
-    def __init__(self, name, catchphrase=""):
-        self.name = name
-        self.catchphrase = catchphrase
 
-    def format(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'catchphrase': self.catchphrase}
+class Booking(db.Model):
+    __tablename__ = "bookings"
+
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_VIN = db.Column(db.Integer, db.ForeignKey("vehicles.VIN"))
+    client_id = db.Column(db.Integer, db.ForeignKey("clients.id"))
+    start_datetime = db.Column(db.DateTime, nullable=False)
+    end_datetime = db.Column(db.DateTime, nullable=False)
+    vehicle = db.relationship("Vehicle")
+    client = db.relationship("Client")
