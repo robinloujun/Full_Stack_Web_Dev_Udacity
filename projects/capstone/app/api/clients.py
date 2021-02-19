@@ -72,7 +72,7 @@ def post_client():
 
 
 @app.route('/clients/<int:id>', methods=['PATCH'])
-# @requires_auth('patch:clients')
+@requires_auth('patch:clients')
 def patch_client(payload, id):
     """
     endpoint PATCH /clients/<id>, where <id> is the existing model id
@@ -103,7 +103,7 @@ def patch_client(payload, id):
 
 
 @app.route('/clients/<int:id>', methods=['DELETE'])
-# @requires_auth('delete:clients')
+@requires_auth('delete:clients')
 def delete_client(payload, id):
     """
     endpoint DELETE /clients/<id>, where <id> is the existing model id

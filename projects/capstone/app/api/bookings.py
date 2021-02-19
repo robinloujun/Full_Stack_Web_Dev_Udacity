@@ -73,7 +73,7 @@ def post_booking():
 
 
 @app.route('/bookings/<int:id>', methods=['PATCH'])
-# @requires_auth('patch:bookings')
+@requires_auth('patch:bookings')
 def patch_booking(payload, id):
     """
     endpoint PATCH /bookings/<id>, where <id> is the existing model id
@@ -106,7 +106,7 @@ def patch_booking(payload, id):
 
 
 @app.route('/bookings/<int:id>', methods=['DELETE'])
-# @requires_auth('delete:bookings')
+@requires_auth('delete:bookings')
 def delete_booking(payload, id):
     """
     endpoint DELETE /bookings/<id>, where <id> is the existing model id

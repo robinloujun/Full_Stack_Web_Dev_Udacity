@@ -43,7 +43,7 @@ def get_vehicle(id):
 
 
 @api.route("/vehicles", methods=["POST"])
-# @requires_auth('post:vehicles')
+@requires_auth('post:vehicles')
 def post_vehicle():
     """
     endpoint POST /vehicles
@@ -115,7 +115,7 @@ def patch_vehicle(payload, id):
 
 
 @app.route('/vehicles/<int:id>', methods=['DELETE'])
-# @requires_auth('delete:vehicles')
+@requires_auth('delete:vehicles')
 def delete_vehicle(payload, id):
     """
     endpoint DELETE /vehicles/<id>, where <id> is the existing model id
