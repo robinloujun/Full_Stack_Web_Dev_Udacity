@@ -3,6 +3,12 @@ from datetime import datetime
 from . import db
 
 
+database_filename = "database.db"
+project_dir = os.path.dirname(os.path.abspath(__file__))
+database_path = "sqlite:///{}".format(
+    os.path.join(project_dir, database_filename))
+
+
 def setup_db(app, database_path=database_path):
     '''
     setup_db(app)
@@ -36,7 +42,19 @@ class Vehicle(db.Model):
             "fuel_type": self.fuel_type,
             "standard_seat_number": self.standard_seat_number,
             "automatic": self.automatic,
+            "bookings_count": self.bookings.count(),
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
 
     def __repr__(self):
         return json.dumps(self.to_json())
@@ -58,7 +76,19 @@ class Client(db.Model):
             "forename": self.forename,
             "surname": self.surname,
             "email": self.email,
+            "bookings_count": self.bookings.count(),
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
 
     def __repr__(self):
         return json.dumps(self.to_json())
@@ -83,6 +113,17 @@ class Booking(db.Model):
             "start_datetime": self.start_datetime,
             "end_datetime": self.end_datetime,
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
 
     def __repr__(self):
         return json.dumps(self.to_json())
