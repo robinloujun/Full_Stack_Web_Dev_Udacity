@@ -58,7 +58,6 @@ def post_vehicle():
     body = request.get_json()
 
     vehicle = Vehicle(
-        VIN=body.get('VIN'),
         make=body.get('make'),
         model=body.get('model'),
         model_year=body.get('model_year'),
@@ -70,7 +69,7 @@ def post_vehicle():
         vehicle.insert()
         return jsonify({
             'success': True,
-            'vehicle': [vehicle.to_json()],
+            'vehicle_vin': vehicle.VIN,
         })
     except:
         abort(422)
@@ -92,8 +91,6 @@ def patch_vehicle(payload, id):
     try:
         body = request.get_json()
         vehicle = Vehicle.query.get_or_404(id)
-        if 'VIN' in body:
-            vehicle.VIN = body.get('VIN')
         if 'make' in body:
             vehicle.make = json.dumps(body.get('make'))
         if 'model' in body:
@@ -109,7 +106,7 @@ def patch_vehicle(payload, id):
         vehicle.update()
         return jsonify({
             'success': True,
-            'vehicles': [vehicle.to_json()],
+            'vehicle_vin': vehicle.VIN,
         })
     except:
         abort(500)
@@ -132,7 +129,7 @@ def delete_vehicle(payload, id):
         vehicle.delete()
         return jsonify({
             'success': True,
-            'delete': id,
+            'vehicle_vin': id,
         })
     except:
         abort(500)

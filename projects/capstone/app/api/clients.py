@@ -66,7 +66,7 @@ def post_client():
         client.insert()
         return jsonify({
             'success': True,
-            'client': [client.to_json()],
+            'client_id': client.id,
         })
     except:
         abort(422)
@@ -97,7 +97,7 @@ def patch_client(payload, id):
         client.update()
         return jsonify({
             'success': True,
-            'clients': [client.to_json()],
+            'client_id': client.id,
         })
     except:
         abort(500)
@@ -120,7 +120,7 @@ def delete_client(payload, id):
         client.delete()
         return jsonify({
             'success': True,
-            'delete': id,
+            'client_id': id,
         })
     except:
         abort(500)

@@ -67,7 +67,7 @@ def post_booking():
         booking.insert()
         return jsonify({
             'success': True,
-            'booking': [booking.to_json()],
+            'booking_id': booking.id,
         })
     except:
         abort(422)
@@ -100,7 +100,7 @@ def patch_booking(payload, id):
         booking.update()
         return jsonify({
             'success': True,
-            'bookings': [booking.to_json()],
+            'booking_id': booking.id,
         })
     except:
         abort(500)
@@ -123,7 +123,7 @@ def delete_booking(payload, id):
         booking.delete()
         return jsonify({
             'success': True,
-            'delete': id,
+            'booking_id': id,
         })
     except:
         abort(500)
