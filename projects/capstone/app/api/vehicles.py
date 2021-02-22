@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from . import api
-from capstone.models import Vehicle
+from ..auth.auth import requires_auth
+from ..models import Vehicle
 
 
 @api.route("/vehicles", methods=["GET"])
@@ -75,8 +76,8 @@ def post_vehicle():
         abort(422)
 
 
-@app.route('/vehicles/<int:id>', methods=['PATCH'])
-# @requires_auth('patch:vehicles')
+@api.route('/vehicles/<int:id>', methods=['PATCH'])
+@requires_auth('patch:vehicles')
 def patch_vehicle(payload, id):
     """
     endpoint PATCH /vehicles/<id>, where <id> is the existing model id
@@ -114,7 +115,7 @@ def patch_vehicle(payload, id):
         abort(500)
 
 
-@app.route('/vehicles/<int:id>', methods=['DELETE'])
+@api.route('/vehicles/<int:id>', methods=['DELETE'])
 @requires_auth('delete:vehicles')
 def delete_vehicle(payload, id):
     """

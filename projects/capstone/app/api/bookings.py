@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from . import api
-from capstone.models import Booking
+from ..auth.auth import requires_auth
+from ..models import Booking
 
 
 @api.route("/bookings", methods=["GET"])
@@ -43,7 +44,7 @@ def get_booking(id):
 
 
 @api.route("/bookings", methods=["POST"])
-# @requires_auth('post:bookings')
+@requires_auth('post:bookings')
 def post_booking():
     """
     endpoint POST /bookings
@@ -72,7 +73,7 @@ def post_booking():
         abort(422)
 
 
-@app.route('/bookings/<int:id>', methods=['PATCH'])
+@api.route('/bookings/<int:id>', methods=['PATCH'])
 @requires_auth('patch:bookings')
 def patch_booking(payload, id):
     """
@@ -105,7 +106,7 @@ def patch_booking(payload, id):
         abort(500)
 
 
-@app.route('/bookings/<int:id>', methods=['DELETE'])
+@api.route('/bookings/<int:id>', methods=['DELETE'])
 @requires_auth('delete:bookings')
 def delete_booking(payload, id):
     """

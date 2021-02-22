@@ -2,7 +2,7 @@ from flask import jsonify
 from . import api
 
 # Error Handling
-@app.errorhandler(400)
+@api.errorhandler(400)
 def bad_request(error):
     return jsonify({
         'success': False,
@@ -11,7 +11,7 @@ def bad_request(error):
     }), 400
 
 
-@app.errorhandler(401)
+@api.errorhandler(401)
 def method_not_allowed(error):
     return jsonify({
         'success': False,
@@ -20,7 +20,7 @@ def method_not_allowed(error):
     }), 401
 
 
-@app.errorhandler(404)
+@api.errorhandler(404)
 def not_found(error):
     return jsonify({
         'success': False,
@@ -29,7 +29,7 @@ def not_found(error):
     }), 404
 
 
-@app.errorhandler(422)
+@api.errorhandler(422)
 def unprocessable(error):
     return jsonify({
         "success": False,
@@ -38,7 +38,7 @@ def unprocessable(error):
     }), 422
 
 
-@app.errorhandler(500)
+@api.errorhandler(500)
 def internal_server_error(error):
     return jsonify({
         'success': False,

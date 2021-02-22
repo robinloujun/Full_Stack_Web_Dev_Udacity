@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from . import api
-from capstone.models import Client
+from ..auth.auth import requires_auth
+from ..models import Client
 
 
 @api.route("/clients", methods=["GET"])
@@ -43,7 +44,7 @@ def get_client(id):
 
 
 @api.route("/clients", methods=["POST"])
-# @requires_auth('post:clients')
+@requires_auth('post:clients')
 def post_client():
     """
     endpoint POST /clients
@@ -71,7 +72,7 @@ def post_client():
         abort(422)
 
 
-@app.route('/clients/<int:id>', methods=['PATCH'])
+@api.route('/clients/<int:id>', methods=['PATCH'])
 @requires_auth('patch:clients')
 def patch_client(payload, id):
     """
@@ -102,7 +103,7 @@ def patch_client(payload, id):
         abort(500)
 
 
-@app.route('/clients/<int:id>', methods=['DELETE'])
+@api.route('/clients/<int:id>', methods=['DELETE'])
 @requires_auth('delete:clients')
 def delete_client(payload, id):
     """
