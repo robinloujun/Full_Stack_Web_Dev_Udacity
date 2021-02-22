@@ -1,24 +1,7 @@
+import os
 import json
 from datetime import datetime
 from . import db
-
-
-database_filename = "database.db"
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = "sqlite:///{}".format(
-    os.path.join(project_dir, database_filename))
-
-
-def setup_db(app, database_path=database_path):
-    '''
-    setup_db(app)
-        binds a flask application and a SQLAlchemy service
-    '''
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
-    db.create_all()
 
 
 class Vehicle(db.Model):
