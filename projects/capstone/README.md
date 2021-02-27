@@ -271,12 +271,14 @@ GET '/bookings'
 {
     "bookings": [
         {
+            "booking_id": 886,
             "vehicle_VIN": "11234",
             "client_id": "1912",
             "start_datetime": "2018-08-08T09:00:00.000000",
             "end_datetime": "2018-08-10T21:00:00.000000",
         },
         {
+            "booking_id": 1886,
             "vehicle_VIN": "10006",
             "client_id": "1880",
             "start_datetime": "2021-02-14T09:00:00.000000",
@@ -298,6 +300,7 @@ GET '/bookings/int:id'
 {
     "bookings": [
         {
+            "booking_id": 886,
             "vehicle_VIN": "11234",
             "client_id": "1912",
             "start_datetime": "2018-08-08T09:00:00.000000",
