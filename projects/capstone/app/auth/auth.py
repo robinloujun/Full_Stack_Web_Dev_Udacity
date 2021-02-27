@@ -68,7 +68,7 @@ def check_permissions(permission, payload):
     """
     checks if the decoded JWT has required permission
     Inputs:
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'post:vehicle')
         payload: decoded jwt payload
     Raises:
         AuthError: if
@@ -157,7 +157,7 @@ def verify_decode_jwt(token):
 def requires_auth(permission=''):
     """
     Inputs:
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'post:vehicle')
     Returns:
         decorator which passes the decoded payload to the decorated method
     """
