@@ -353,7 +353,29 @@ DELETE '/bookings/int:id'
 }
 ```
 
-### 4. Testing
+### 4. Roles and Permissions:
+
+* Administrator
+    * can get, add, update or delete vehicles
+        * get:vehicles
+        * post:vehicles
+        * patch:vehicles
+        * delete:vehicles
+    * can get, add, update or delete clients
+        * get:clients
+        * post:clients
+        * patch:clients
+        * delete:clients
+    * can get, add, update or delete bookings
+        * get:bookings
+        * post:bookings
+        * patch:bookings
+        * delete:bookings
+
+Note: token for each role are set as environmental variables before deployment.
+
+
+### 5. Testing
 
 To run the tests, run
 
@@ -362,11 +384,11 @@ dropdb capstone_test
 createdb capstone_test
 python test_capstone.py
 ```
-### 5. Verify on the Browser:
+### 6. Verify on the Browser:
 Navigate to project homepage [http://127.0.0.1:5000/](http://127.0.0.1:5000/) or [http://localhost:5000](http://localhost:5000) 
 
 
-## Author
+## 7. Author
 
 Jun Lou
 
