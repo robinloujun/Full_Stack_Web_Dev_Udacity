@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from . import api
 from ..auth.auth import requires_auth
 from ..models import Vehicle
